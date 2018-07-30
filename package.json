@@ -1,8 +1,14 @@
 {
   "name": "ctore-cli",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "git@github.com:andy23512/ctore-cli.git",
   "author": "andy23512 <andy23512@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "bin": {
+    "ctore": "./ctore.js"
+  },
+  "dependencies": {
+    "command-exists": "^1.2.7",
+    "inquirer": "^6.0.0"
+  }
 }

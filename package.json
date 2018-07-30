@@ -1,0 +1,8 @@
+{
+  "name": "ctore-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:andy23512/ctore-cli.git",
+  "author": "andy23512 <andy23512@gmail.com>",
+  "license": "MIT"
+}

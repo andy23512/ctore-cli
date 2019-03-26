@@ -4,20 +4,22 @@ const child_process = require('child_process');
 const commandExists = require('command-exists');
 const inquirer = require('inquirer');
 const questions = [
-  {type: 'confirm', name: 'routing', message: 'Generate a routing module?', default: true},
-  {type: 'list', name: 'style', message: 'Choose a file extension for style files', default: 1, choices: [
-    {name: 'CSS', value: null},
-    {name: 'SASS', value: 'sass'},
-    {name: 'Stylus', value: 'stylus'},
-  ]}
+  {
+    type: 'checkbox', name: 'schematics', message: 'Check the schematics you need for your project', choices: [
+      {name: 'Angular Material', value: '@angular/material'},
+      {name: 'Jest', value: '@briebug/jest-schematic'},
+    ]
+  }
 ];
 let projectName = '';
-const args = [];
+let userOptions = null;
 
 getProjectName()
   .then(() => commandExists('ng'))
   .then(getConfig)
   .then(runNgCli)
+  .then(changeDirToProject)
+  .then(addSchematics)
   .catch(console.error);
 
 function getProjectName() {
@@ -38,15 +40,26 @@ function getConfig() {
   return inquirer
     .prompt(questions)
     .then(answers => {
-      if(answers.routing) args.push('--routing');
-      if(answers.style) args.push(`--style=${answers.style}`);
+      userOptions = answers;
     })
 }
 
 function runNgCli() {
-  return promiseSpawn('ng', ['new', projectName, ...args]).catch(code => {
+  return promiseSpawn('ng', ['new', projectName]).catch(code => {
     throw new Error('ng-cli process exited with error code ' + code);
   })
+}
+
+function changeDirToProject() {
+  return Promise.resolve(process.chdir(projectName));
+}
+
+function addSchematics() {
+  return userOptions.schematics
+    .reduce(
+      (p, schematic) => p.then(_ => promiseSpawn('ng', ['add', schematic])),
+      Promise.resolve()
+    )
 }
 
 function promiseSpawn(command, args) {

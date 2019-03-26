@@ -5,7 +5,7 @@ const commandExists = require('command-exists');
 const inquirer = require('inquirer');
 const questions = [
   {
-    type: 'checkbox', name: 'schematics', message: 'Check the schematics you need for your project', choices: [
+    type: 'checkbox', name: 'schematics', message: 'Which schematics do you want to add?', choices: [
       {name: 'Angular Material', value: '@angular/material'},
       {name: 'Jest', value: '@briebug/jest-schematic'},
     ]

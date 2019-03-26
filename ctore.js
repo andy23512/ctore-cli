@@ -6,8 +6,8 @@ const inquirer = require('inquirer');
 const questions = [
   {
     type: 'checkbox', name: 'schematics', message: 'Which schematics do you want to add?', choices: [
-      {name: 'Angular Material', value: '@angular/material'},
-      {name: 'Jest', value: '@briebug/jest-schematic'},
+      {name: 'Angular Material (@angular/material)', value: '@angular/material'},
+      {name: 'Jest (@briebug/jest-schematic)', value: '@briebug/jest-schematic'},
     ]
   }
 ];

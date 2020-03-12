@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('./dist/ctare.js')
+require('./dist/ctore.js')

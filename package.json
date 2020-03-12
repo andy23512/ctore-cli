@@ -5,10 +5,31 @@
   "author": "andy23512 <andy23512@gmail.com>",
   "license": "MIT",
   "bin": {
-    "ctore": "./ctore.js"
+    "ctore": "./main.js"
   },
+  "scripts": {
+    "start": "ts-node src/ctore.ts",
+    "build": "tsc",
+    "precommit-build": "tsc && git add dist/"
+  },
+  "files": [
+    "main.js",
+    "dist/ctore.js"
+  ],
   "dependencies": {
     "command-exists": "^1.2.7",
     "inquirer": "^6.0.0"
-  }
+  },
+  "devDependencies": {
+    "@types/command-exists": "^1.2.0",
+    "@types/inquirer": "^6.5.0",
+    "@types/node": "^13.7.7",
+    "precommit-hook": "^3.0.0",
+    "ts-node": "^8.6.2",
+    "tslint": "^6.0.0",
+    "typescript": "^3.8.3"
+  },
+  "pre-commit": [
+    "precommit-build"
+  ]
 }

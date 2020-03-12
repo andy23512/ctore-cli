@@ -7,19 +7,20 @@ const questions = [
   {
     type: 'checkbox', name: 'schematics', message: 'Which schematics do you want to add?', choices: [
       {name: 'Angular Material (@angular/material)', value: '@angular/material', short: 'Angular Material'},
-      {name: 'Jest (@briebug/jest-schematic)', value: '@briebug/jest-schematic', short: 'Jest'},
+      // {name: 'Jest (@briebug/jest-schematic)', value: '@briebug/jest-schematic', short: 'Jest'},
       {name: 'NGXS (@ngxs/schematics)', value: '@ngxs/schematics', short: 'NGXS'},
       {name: 'Apollo Angular (apollo-angular)', value: 'apollo-angular', short: 'Apollo Angular'},
     ]
   }
-];
+]
 let projectName = '';
 let userOptions = null;
 
 getProjectName()
   .then(() => commandExists('ng'))
+  .then(() => commandExists('create-nx-workspace'))
   .then(getConfig)
-  .then(runNgCli)
+  .then(runCli)
   .then(changeDirToProject)
   .then(addSchematics)
   .catch(console.error);
@@ -46,9 +47,9 @@ function getConfig() {
     })
 }
 
-function runNgCli() {
-  return promiseSpawn('ng', ['new', projectName]).catch(code => {
-    throw new Error('ng-cli process exited with error code ' + code);
+function runCli() {
+  return promiseSpawn('create-nx-workspace', [projectName, '--preset=angular', '--appName=app', '--style=scss']).catch(code => {
+    throw new Error('create-nx-workspace exited with error code ' + code)
   })
 }
 

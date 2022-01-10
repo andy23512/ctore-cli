@@ -71,6 +71,7 @@ function runCli() {
     "--preset=angular",
     "--appName=app",
     "--style=scss",
+    "--nxCloud=false",
   ]).catch((code) => {
     throw new Error("create-nx-workspace exited with error code " + code);
   });

@@ -7,11 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var child_process_1 = __importDefault(require("child_process"));
 var command_exists_1 = __importDefault(require("command-exists"));
 var inquirer_1 = __importDefault(require("inquirer"));
-var projectName = '';
+var projectName = "";
 var userOptions;
 getProjectName()
-    .then(function () { return command_exists_1.default('ng'); })
-    .then(function () { return command_exists_1.default('create-nx-workspace'); })
+    .then(function () { return command_exists_1.default("ng"); })
+    .then(function () { return command_exists_1.default("create-nx-workspace"); })
     .then(getConfig)
     .then(runCli)
     .then(changeDirToProject)
@@ -23,7 +23,7 @@ function getProjectName() {
         projectName = process.argv[2];
         projectName
             ? resolve()
-            : reject(new Error('Error: No project name is given\nUsage: ctore <project-name>'));
+            : reject(new Error("Error: No project name is given\nUsage: ctore <project-name>"));
     });
 }
 function getConfig() {
@@ -32,41 +32,37 @@ function getConfig() {
     return inquirer_1.default
         .prompt([
         {
-            type: 'checkbox',
-            name: 'schematics',
-            message: 'Which schematics do you want to add?',
+            type: "checkbox",
+            name: "schematics",
+            message: "Which schematics do you want to add?",
             choices: [
                 {
-                    name: 'Angular Material (@angular/material)',
-                    value: '@angular/material',
-                    short: 'Angular Material'
+                    name: "Angular Material (@angular/material)",
+                    value: "@angular/material",
+                    short: "Angular Material",
                 },
                 // {name: 'Jest (@briebug/jest-schematic)', value: '@briebug/jest-schematic', short: 'Jest'},
                 {
-                    name: 'NGXS (@ngxs/schematics)',
-                    value: '@ngxs/schematics',
-                    short: 'NGXS'
+                    name: "NGXS (@ngxs/schematics)",
+                    value: "@ngxs/schematics",
+                    short: "NGXS",
                 },
-                {
-                    name: 'Apollo Angular (apollo-angular)',
-                    value: 'apollo-angular',
-                    short: 'Apollo Angular'
-                }
-            ]
-        }
+            ],
+        },
     ])
         .then(function (answers) {
         userOptions = answers;
     });
 }
 function runCli() {
-    return promiseSpawn('create-nx-workspace', [
+    return promiseSpawn("create-nx-workspace", [
         projectName,
-        '--preset=angular',
-        '--appName=app',
-        '--style=scss'
+        "--preset=angular",
+        "--appName=app",
+        "--style=scss",
+        "--nxCloud=false",
     ]).catch(function (code) {
-        throw new Error('create-nx-workspace exited with error code ' + code);
+        throw new Error("create-nx-workspace exited with error code " + code);
     });
 }
 function changeDirToProject() {
@@ -74,13 +70,13 @@ function changeDirToProject() {
 }
 function addSchematics() {
     return userOptions.schematics.reduce(function (p, schematic) {
-        return p.then(function (_) { return promiseSpawn('ng', ['add', schematic]); });
+        return p.then(function (_) { return promiseSpawn("ng", ["add", schematic]); });
     }, Promise.resolve());
 }
 function promiseSpawn(command, args) {
     return new Promise(function (resolve, reject) {
         child_process_1.default
-            .spawn(command, args, { shell: true, stdio: 'inherit' })
-            .on('close', function (code) { return (code === 0 ? resolve() : reject()); });
+            .spawn(command, args, { shell: true, stdio: "inherit" })
+            .on("close", function (code) { return (code === 0 ? resolve() : reject()); });
     });
 }

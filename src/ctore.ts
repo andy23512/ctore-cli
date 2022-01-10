@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-import childProcess from 'child_process';
-import commandExists from 'command-exists';
-import inquirer from 'inquirer';
+import childProcess from "child_process";
+import commandExists from "command-exists";
+import inquirer from "inquirer";
 
-let projectName = '';
+let projectName = "";
 let userOptions: {
   schematics: any;
 };
 
 getProjectName()
-  .then(() => commandExists('ng'))
-  .then(() => commandExists('create-nx-workspace'))
+  .then(() => commandExists("ng"))
+  .then(() => commandExists("create-nx-workspace"))
   .then(getConfig)
   .then(runCli)
   .then(changeDirToProject)
@@ -25,7 +25,7 @@ function getProjectName() {
       ? resolve()
       : reject(
           new Error(
-            'Error: No project name is given\nUsage: ctore <project-name>'
+            "Error: No project name is given\nUsage: ctore <project-name>"
           )
         );
   });
@@ -37,42 +37,42 @@ function getConfig() {
   return inquirer
     .prompt([
       {
-        type: 'checkbox',
-        name: 'schematics',
-        message: 'Which schematics do you want to add?',
+        type: "checkbox",
+        name: "schematics",
+        message: "Which schematics do you want to add?",
         choices: [
           {
-            name: 'Angular Material (@angular/material)',
-            value: '@angular/material',
-            short: 'Angular Material'
+            name: "Angular Material (@angular/material)",
+            value: "@angular/material",
+            short: "Angular Material",
           },
           // {name: 'Jest (@briebug/jest-schematic)', value: '@briebug/jest-schematic', short: 'Jest'},
           {
-            name: 'NGXS (@ngxs/schematics)',
-            value: '@ngxs/schematics',
-            short: 'NGXS'
+            name: "NGXS (@ngxs/schematics)",
+            value: "@ngxs/schematics",
+            short: "NGXS",
           },
-          {
+          /*{
             name: 'Apollo Angular (apollo-angular)',
             value: 'apollo-angular',
             short: 'Apollo Angular'
-          }
-        ]
-      }
+          }*/
+        ],
+      },
     ])
-    .then(answers => {
+    .then((answers) => {
       userOptions = answers;
     });
 }
 
 function runCli() {
-  return promiseSpawn('create-nx-workspace', [
+  return promiseSpawn("create-nx-workspace", [
     projectName,
-    '--preset=angular',
-    '--appName=app',
-    '--style=scss'
-  ]).catch(code => {
-    throw new Error('create-nx-workspace exited with error code ' + code);
+    "--preset=angular",
+    "--appName=app",
+    "--style=scss",
+  ]).catch((code) => {
+    throw new Error("create-nx-workspace exited with error code " + code);
   });
 }
 
@@ -83,7 +83,7 @@ function changeDirToProject() {
 function addSchematics() {
   return userOptions.schematics.reduce(
     (p: Promise<any>, schematic: string) =>
-      p.then(_ => promiseSpawn('ng', ['add', schematic])),
+      p.then((_) => promiseSpawn("ng", ["add", schematic])),
     Promise.resolve()
   );
 }
@@ -91,7 +91,7 @@ function addSchematics() {
 function promiseSpawn(command: string, args: string[]) {
   return new Promise((resolve, reject) => {
     childProcess
-      .spawn(command, args, { shell: true, stdio: 'inherit' })
-      .on('close', code => (code === 0 ? resolve() : reject()));
+      .spawn(command, args, { shell: true, stdio: "inherit" })
+      .on("close", (code) => (code === 0 ? resolve() : reject()));
   });
 }

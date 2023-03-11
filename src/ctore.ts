@@ -72,6 +72,7 @@ function runCli() {
     "--appName=app",
     "--style=scss",
     "--nxCloud=false",
+    "--skipGit",
   ]).catch((code) => {
     throw new Error("create-nx-workspace exited with error code " + code);
   });

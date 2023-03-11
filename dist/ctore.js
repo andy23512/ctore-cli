@@ -41,12 +41,6 @@ function getConfig() {
                     value: "@angular/material",
                     short: "Angular Material",
                 },
-                // {name: 'Jest (@briebug/jest-schematic)', value: '@briebug/jest-schematic', short: 'Jest'},
-                {
-                    name: "NGXS (@ngxs/schematics)",
-                    value: "@ngxs/schematics",
-                    short: "NGXS",
-                },
             ],
         },
     ])
@@ -71,7 +65,9 @@ function changeDirToProject() {
 }
 function addSchematics() {
     return userOptions.schematics.reduce(function (p, schematic) {
-        return p.then(function (_) { return promiseSpawn("ng", ["add", schematic]); });
+        return p
+            .then(function (_) { return promiseSpawn("npm", ["i", schematic]); })
+            .then(function () { return promiseSpawn("nx", ["g", schematic + ":ng-add"]); });
     }, Promise.resolve());
 }
 function promiseSpawn(command, args) {

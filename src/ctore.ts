@@ -47,11 +47,11 @@ function getConfig() {
             short: "Angular Material",
           },
           // {name: 'Jest (@briebug/jest-schematic)', value: '@briebug/jest-schematic', short: 'Jest'},
-          {
+          /*{
             name: "NGXS (@ngxs/schematics)",
             value: "@ngxs/schematics",
             short: "NGXS",
-          },
+          },*/
           /*{
             name: 'Apollo Angular (apollo-angular)',
             value: 'apollo-angular',
@@ -85,7 +85,9 @@ function changeDirToProject() {
 function addSchematics() {
   return userOptions.schematics.reduce(
     (p: Promise<any>, schematic: string) =>
-      p.then((_) => promiseSpawn("ng", ["add", schematic])),
+      p
+        .then((_) => promiseSpawn("npm", ["i", schematic]))
+        .then(() => promiseSpawn("nx", ["g", `${schematic}:ng-add`])),
     Promise.resolve()
   );
 }
